@@ -65,7 +65,7 @@
             z-index: 1;
         }
 
-        /* --- TARJETA AESTHETIC --- */
+        /* --- TARJETA --- */
         .login-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
