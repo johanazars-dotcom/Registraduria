@@ -1,0 +1,615 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict 4G6Cf8L10Bz1zcOhbYitlCCnaWvU5zX4C85QUl87uHzwHPNGvaWez5KOPhIcsV7
+
+-- Dumped from database version 18.3
+-- Dumped by pg_dump version 18.3
+
+-- Started on 2026-04-20 10:42:18
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 222 (class 1259 OID 24749)
+-- Name: administradores; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.administradores (
+    id integer NOT NULL,
+    usuario character varying(50) NOT NULL,
+    clave character varying(255) NOT NULL,
+    nombre_completo character varying(100)
+);
+
+
+ALTER TABLE public.administradores OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 24748)
+-- Name: administradores_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.administradores_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.administradores_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 5082 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: administradores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.administradores_id_seq OWNED BY public.administradores.id;
+
+
+--
+-- TOC entry 224 (class 1259 OID 24762)
+-- Name: ciudadanos; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ciudadanos (
+    id integer NOT NULL,
+    numero_documento character varying(20) NOT NULL,
+    nombres character varying(80) NOT NULL,
+    apellidos character varying(80) NOT NULL,
+    fecha_nacimiento date NOT NULL,
+    telefono character varying(20),
+    correo character varying(100),
+    id_zona integer,
+    fecha_registro timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    id_mesa integer
+);
+
+
+ALTER TABLE public.ciudadanos OWNER TO postgres;
+
+--
+-- TOC entry 223 (class 1259 OID 24761)
+-- Name: ciudadanos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ciudadanos_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.ciudadanos_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 5083 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: ciudadanos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ciudadanos_id_seq OWNED BY public.ciudadanos.id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 24664)
+-- Name: ciudades; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ciudades (
+    id integer NOT NULL,
+    nombre character varying(80) NOT NULL,
+    departamento character varying(60) DEFAULT 'Boyacá'::character varying,
+    codigo_dane character varying(10) NOT NULL
+);
+
+
+ALTER TABLE public.ciudades OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 24663)
+-- Name: ciudades_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ciudades_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.ciudades_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 5084 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: ciudades_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ciudades_id_seq OWNED BY public.ciudades.id;
+
+
+--
+-- TOC entry 230 (class 1259 OID 24879)
+-- Name: documentos_expedidos; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.documentos_expedidos (
+    id integer NOT NULL,
+    id_ciudadano integer NOT NULL,
+    tipo_documento character varying(50) NOT NULL,
+    numero_serie character varying(30) NOT NULL,
+    fecha_expedicion date NOT NULL,
+    fecha_vencimiento date,
+    estado character varying(20) DEFAULT 'vigente'::character varying,
+    observaciones character varying(300)
+);
+
+
+ALTER TABLE public.documentos_expedidos OWNER TO postgres;
+
+--
+-- TOC entry 229 (class 1259 OID 24878)
+-- Name: documentos_expedidos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.documentos_expedidos_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.documentos_expedidos_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 5085 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: documentos_expedidos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.documentos_expedidos_id_seq OWNED BY public.documentos_expedidos.id;
+
+
+--
+-- TOC entry 228 (class 1259 OID 24834)
+-- Name: mesas_votacion; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.mesas_votacion (
+    id integer NOT NULL,
+    numero_mesa integer NOT NULL,
+    capacidad integer DEFAULT 400,
+    ubicacion_detallada character varying(100),
+    id_zona integer NOT NULL
+);
+
+
+ALTER TABLE public.mesas_votacion OWNER TO postgres;
+
+--
+-- TOC entry 227 (class 1259 OID 24833)
+-- Name: mesas_votacion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.mesas_votacion_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.mesas_votacion_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 5086 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: mesas_votacion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.mesas_votacion_id_seq OWNED BY public.mesas_votacion.id;
+
+
+--
+-- TOC entry 226 (class 1259 OID 24793)
+-- Name: zonas_votacion; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.zonas_votacion (
+    id integer NOT NULL,
+    nombre_zona character varying(100) NOT NULL,
+    puesto_votacion character varying(100) NOT NULL,
+    direccion character varying(150),
+    municipio character varying(50) DEFAULT 'Nobsa'::character varying,
+    id_ciudad integer
+);
+
+
+ALTER TABLE public.zonas_votacion OWNER TO postgres;
+
+--
+-- TOC entry 225 (class 1259 OID 24792)
+-- Name: zonas_votacion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.zonas_votacion_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.zonas_votacion_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 5087 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: zonas_votacion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.zonas_votacion_id_seq OWNED BY public.zonas_votacion.id;
+
+
+--
+-- TOC entry 4883 (class 2604 OID 24752)
+-- Name: administradores id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.administradores ALTER COLUMN id SET DEFAULT nextval('public.administradores_id_seq'::regclass);
+
+
+--
+-- TOC entry 4884 (class 2604 OID 24765)
+-- Name: ciudadanos id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudadanos ALTER COLUMN id SET DEFAULT nextval('public.ciudadanos_id_seq'::regclass);
+
+
+--
+-- TOC entry 4881 (class 2604 OID 24667)
+-- Name: ciudades id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudades ALTER COLUMN id SET DEFAULT nextval('public.ciudades_id_seq'::regclass);
+
+
+--
+-- TOC entry 4890 (class 2604 OID 24882)
+-- Name: documentos_expedidos id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.documentos_expedidos ALTER COLUMN id SET DEFAULT nextval('public.documentos_expedidos_id_seq'::regclass);
+
+
+--
+-- TOC entry 4888 (class 2604 OID 24837)
+-- Name: mesas_votacion id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mesas_votacion ALTER COLUMN id SET DEFAULT nextval('public.mesas_votacion_id_seq'::regclass);
+
+
+--
+-- TOC entry 4886 (class 2604 OID 24796)
+-- Name: zonas_votacion id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zonas_votacion ALTER COLUMN id SET DEFAULT nextval('public.zonas_votacion_id_seq'::regclass);
+
+
+--
+-- TOC entry 5068 (class 0 OID 24749)
+-- Dependencies: 222
+-- Data for Name: administradores; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.administradores (id, usuario, clave, nombre_completo) FROM stdin;
+1	admin_nobsa	sena2026	Administrador General CIMM
+\.
+
+
+--
+-- TOC entry 5070 (class 0 OID 24762)
+-- Dependencies: 224
+-- Data for Name: ciudadanos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ciudadanos (id, numero_documento, nombres, apellidos, fecha_nacimiento, telefono, correo, id_zona, fecha_registro, id_mesa) FROM stdin;
+1	1052384001	Diego	Salazar	2000-05-15	3101234567	salazar@correo.com	\N	2026-04-18 21:39:29.254645	1
+2	1052384002	Jhon	Nova	1999-08-20	3119876543	jhonova@correo.com	\N	2026-04-18 21:39:29.254645	4
+3	1052384003	Adriana	Lopez	1995-03-10	3124567890	adriana@correo.com	\N	2026-04-18 21:39:29.254645	3
+4	1052384004	Carlos	Cheng	1988-11-25	3130001122	cheng@correo.com	\N	2026-04-18 21:39:29.254645	3
+6	1093298177	jhon alejandro	ovallos parada	2008-01-14	3044627341	jhonovaloos@gmail.com	\N	2026-04-20 06:46:15.617555	5
+7	172846238	pepito alejandro	perez castañeda	2007-01-10	317263783	pepitoperez@gmail.com	\N	2026-04-20 08:34:22.860381	1
+5	219381274	flor alba	plata de lopez	1957-12-25	3142425999	floralba@gmail.com	\N	2026-04-19 11:40:29.566421	1
+\.
+
+
+--
+-- TOC entry 5066 (class 0 OID 24664)
+-- Dependencies: 220
+-- Data for Name: ciudades; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ciudades (id, nombre, departamento, codigo_dane) FROM stdin;
+1	Nobsa	Boyacá	15491
+2	Sogamoso	Boyacá	15762
+3	Duitama	Boyacá	15244
+\.
+
+
+--
+-- TOC entry 5076 (class 0 OID 24879)
+-- Dependencies: 230
+-- Data for Name: documentos_expedidos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.documentos_expedidos (id, id_ciudadano, tipo_documento, numero_serie, fecha_expedicion, fecha_vencimiento, estado, observaciones) FROM stdin;
+2	1	Cédula de Ciudadanía	CC-2026-00101	2018-05-20	\N	vigente	Censo electoral Nobsa
+3	2	Cédula de Ciudadanía	CC-2026-00102	2019-11-12	\N	vigente	Censo electoral Nobsa
+4	3	Cédula de Ciudadanía	CC-2026-00103	2020-02-25	\N	vigente	Censo electoral Nobsa
+5	4	Cédula de Ciudadanía	CC-2026-00104	2015-08-14	\N	vigente	Actualización de datos
+7	6	Cédula de Ciudadanía	CC-2026-00106	2010-06-18	\N	vigente	Residente Nobsa
+8	7	Cédula de Ciudadanía	CC-2026-00107	2021-09-05	\N	vigente	Censo electoral Nobsa
+6	5	Cédula de Ciudadanía	CC-2026-00105	2022-01-30	\N	vigente	Expedición primera vez
+\.
+
+
+--
+-- TOC entry 5074 (class 0 OID 24834)
+-- Dependencies: 228
+-- Data for Name: mesas_votacion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.mesas_votacion (id, numero_mesa, capacidad, ubicacion_detallada, id_zona) FROM stdin;
+1	1	400	Aula 101	1
+2	2	400	Aula 102	1
+3	1	350	Biblioteca	2
+4	1	400	Salon Comunal	4
+5	5	100	salon 3	5
+6	12	100	salon 303	6
+\.
+
+
+--
+-- TOC entry 5072 (class 0 OID 24793)
+-- Dependencies: 226
+-- Data for Name: zonas_votacion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.zonas_votacion (id, nombre_zona, puesto_votacion, direccion, municipio, id_ciudad) FROM stdin;
+2	Zona Industrial	SENA CIMM	Via principal Holcim	Nobsa	1
+3	Zona Rural Norte	Escuela Vereda Bonza	Sector El Cruce	Nobsa	1
+4	Zona Nazareth	Salon Comunal Nazareth	Barrio Nazareth Sector A	Nobsa	1
+5	alcaldia municipal	segundo piso	calle 5# 14 13	\N	1
+6	escula municipal	escula kennedy	barrio camilo torres	\N	1
+1	Zona Urbana Centro	Escuela Central Nobsa	Calle 5 # 4-20	Nobsa	2
+\.
+
+
+--
+-- TOC entry 5088 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: administradores_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.administradores_id_seq', 1, true);
+
+
+--
+-- TOC entry 5089 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: ciudadanos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ciudadanos_id_seq', 7, true);
+
+
+--
+-- TOC entry 5090 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: ciudades_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ciudades_id_seq', 3, true);
+
+
+--
+-- TOC entry 5091 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: documentos_expedidos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.documentos_expedidos_id_seq', 8, true);
+
+
+--
+-- TOC entry 5092 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: mesas_votacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.mesas_votacion_id_seq', 6, true);
+
+
+--
+-- TOC entry 5093 (class 0 OID 0)
+-- Dependencies: 225
+-- Name: zonas_votacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.zonas_votacion_id_seq', 6, true);
+
+
+--
+-- TOC entry 4897 (class 2606 OID 24757)
+-- Name: administradores administradores_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.administradores
+    ADD CONSTRAINT administradores_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4899 (class 2606 OID 24759)
+-- Name: administradores administradores_usuario_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.administradores
+    ADD CONSTRAINT administradores_usuario_key UNIQUE (usuario);
+
+
+--
+-- TOC entry 4901 (class 2606 OID 24775)
+-- Name: ciudadanos ciudadanos_numero_documento_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudadanos
+    ADD CONSTRAINT ciudadanos_numero_documento_key UNIQUE (numero_documento);
+
+
+--
+-- TOC entry 4903 (class 2606 OID 24773)
+-- Name: ciudadanos ciudadanos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudadanos
+    ADD CONSTRAINT ciudadanos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4893 (class 2606 OID 24675)
+-- Name: ciudades ciudades_codigo_dane_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudades
+    ADD CONSTRAINT ciudades_codigo_dane_key UNIQUE (codigo_dane);
+
+
+--
+-- TOC entry 4895 (class 2606 OID 24673)
+-- Name: ciudades ciudades_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudades
+    ADD CONSTRAINT ciudades_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4911 (class 2606 OID 24892)
+-- Name: documentos_expedidos documentos_expedidos_numero_serie_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.documentos_expedidos
+    ADD CONSTRAINT documentos_expedidos_numero_serie_key UNIQUE (numero_serie);
+
+
+--
+-- TOC entry 4913 (class 2606 OID 24890)
+-- Name: documentos_expedidos documentos_expedidos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.documentos_expedidos
+    ADD CONSTRAINT documentos_expedidos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4907 (class 2606 OID 24843)
+-- Name: mesas_votacion mesas_votacion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mesas_votacion
+    ADD CONSTRAINT mesas_votacion_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4909 (class 2606 OID 24845)
+-- Name: mesas_votacion uq_mesa_por_zona; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mesas_votacion
+    ADD CONSTRAINT uq_mesa_por_zona UNIQUE (numero_mesa, id_zona);
+
+
+--
+-- TOC entry 4905 (class 2606 OID 24802)
+-- Name: zonas_votacion zonas_votacion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zonas_votacion
+    ADD CONSTRAINT zonas_votacion_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4917 (class 2606 OID 24893)
+-- Name: documentos_expedidos fk_ciudadano_documento; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.documentos_expedidos
+    ADD CONSTRAINT fk_ciudadano_documento FOREIGN KEY (id_ciudadano) REFERENCES public.ciudadanos(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4914 (class 2606 OID 24851)
+-- Name: ciudadanos fk_ciudadano_mesa; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudadanos
+    ADD CONSTRAINT fk_ciudadano_mesa FOREIGN KEY (id_mesa) REFERENCES public.mesas_votacion(id) ON DELETE SET NULL;
+
+
+--
+-- TOC entry 4916 (class 2606 OID 24846)
+-- Name: mesas_votacion fk_mesa_zona; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.mesas_votacion
+    ADD CONSTRAINT fk_mesa_zona FOREIGN KEY (id_zona) REFERENCES public.zonas_votacion(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4915 (class 2606 OID 24898)
+-- Name: zonas_votacion fk_zona_ciudad; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zonas_votacion
+    ADD CONSTRAINT fk_zona_ciudad FOREIGN KEY (id_ciudad) REFERENCES public.ciudades(id) ON DELETE CASCADE;
+
+
+-- Completed on 2026-04-20 10:42:18
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict 4G6Cf8L10Bz1zcOhbYitlCCnaWvU5zX4C85QUl87uHzwHPNGvaWez5KOPhIcsV7
+
